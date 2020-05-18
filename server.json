@@ -23,6 +23,30 @@
       "title": "Nome do produto 04",
       "image_url": "https://storage.googleapis.com/golden-wind/bootcamp-gostack/camiseta-ecommerce.jpg",
       "price": 80
+    },
+    {
+      "id": "1234561",
+      "title": "Cadeira Gamer 01",
+      "image_url": "https://a-static.mlcdn.com.br/618x463/cadeira-gamer-pichau-donek-ii-vermelha-pg-dnkii-red/pichauinfo/pg-dnkii-red/a75f5dd04a3e3dbb07d05a6fb3a3935d.jpg",
+      "price": 400
+    },
+    {
+      "id": "1234562",
+      "title": "Cadeira Gamer 02",
+      "image_url": "https://a-static.mlcdn.com.br/618x463/cadeira-gamer-pichau-donek-ii-vermelha-pg-dnkii-red/pichauinfo/pg-dnkii-red/a75f5dd04a3e3dbb07d05a6fb3a3935d.jpg",
+      "price": 400
+    },
+    {
+      "id": "1234563",
+      "title": "Cadeira Gamer 03",
+      "image_url": "https://a-static.mlcdn.com.br/618x463/cadeira-gamer-pichau-donek-ii-vermelha-pg-dnkii-red/pichauinfo/pg-dnkii-red/a75f5dd04a3e3dbb07d05a6fb3a3935d.jpg",
+      "price": 400
+    },
+    {
+      "id": "1234564",
+      "title": "Cadeira Gamer 05",
+      "image_url": "https://a-static.mlcdn.com.br/618x463/cadeira-gamer-pichau-donek-ii-vermelha-pg-dnkii-red/pichauinfo/pg-dnkii-red/a75f5dd04a3e3dbb07d05a6fb3a3935d.jpg",
+      "price": 400
     }
   ]
 }

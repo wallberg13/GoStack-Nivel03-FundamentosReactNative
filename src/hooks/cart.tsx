@@ -8,7 +8,7 @@ import React, {
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-interface Product {
+export interface Product {
   id: string;
   title: string;
   image_url: string;
@@ -30,23 +30,112 @@ const CartProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     async function loadProducts(): Promise<void> {
-      // TODO LOAD ITEMS FROM ASYNC STORAGE
+      const productsString = await AsyncStorage.getItem('@GoMarket:products');
+
+      if (productsString) {
+        setProducts(JSON.parse(productsString));
+      }
     }
 
     loadProducts();
   }, []);
 
-  const addToCart = useCallback(async product => {
-    // TODO ADD A NEW ITEM TO THE CART
-  }, []);
+  /**
+   * Passos feitos:
+   * -> Verificando a lista de produtos
+   * -> Se o produto existe, então iremos procurar tal produto na lista dos mesmo, e incremetar uma unidade
+   * -> Se o produto não existe, então ele é adicionado no final.
+   * -> No final, o localstorage sempre é realimentado.
+   */
+  const addToCart = useCallback(
+    async product => {
+      const findedProduct = products.find(
+        productItem => product.id === productItem.id,
+      );
 
-  const increment = useCallback(async id => {
-    // TODO INCREMENTS A PRODUCT QUANTITY IN THE CART
-  }, []);
+      let productAltered: Product[] = [];
+      if (findedProduct) {
+        productAltered = products.map(prodItem => {
+          const prodMap = prodItem;
+          if (prodMap.id === product.id) {
+            prodMap.quantity += 1;
+          }
 
-  const decrement = useCallback(async id => {
-    // TODO DECREMENTS A PRODUCT QUANTITY IN THE CART
-  }, []);
+          return prodMap;
+        });
+      } else {
+        productAltered = [...products, { ...product, quantity: 1 }];
+      }
+
+      setProducts(productAltered);
+      await AsyncStorage.setItem(
+        '@GoMarket:products',
+        JSON.stringify(productAltered),
+      );
+    },
+    [products],
+  );
+
+  /**
+   * 1 - Procurar o produto no banco local
+   * 2 - Incrementar uma unidade
+   * 3 - Salvar no storage
+   */
+  const increment = useCallback(
+    async id => {
+      let productsDB = products;
+
+      // Altera os produtos direto no banco
+      productsDB = productsDB.map(product => {
+        const prodMap = product;
+        if (prodMap.id === id) {
+          prodMap.quantity += 1;
+        }
+        return prodMap;
+      });
+
+      // Depois dá set nos produtos.
+      setProducts(productsDB);
+      await AsyncStorage.setItem(
+        '@GoMarket:products',
+        JSON.stringify(productsDB),
+      );
+    },
+    [products],
+  );
+
+  const decrement = useCallback(
+    async id => {
+      // TODO DECREMENTS A PRODUCT QUANTITY IN THE CART
+
+      let productsDB = products;
+
+      const findedProduct = productsDB.find(
+        product => product.id === id,
+      ) as Product;
+
+      if (findedProduct !== undefined) {
+        if (findedProduct.quantity === 1) {
+          productsDB = productsDB.filter(product => product.id !== id);
+        } else {
+          productsDB = productsDB.map(product => {
+            const prodMap = product;
+            if (prodMap.id === id) {
+              prodMap.quantity -= 1;
+            }
+            return prodMap;
+          });
+        }
+      }
+
+      setProducts(productsDB);
+      await AsyncStorage.setItem(
+        '@GoMarket:products',
+        JSON.stringify(productsDB),
+      );
+    },
+    [products],
+  );
 
   const value = React.useMemo(
     () => ({ addToCart, increment, decrement, products }),
